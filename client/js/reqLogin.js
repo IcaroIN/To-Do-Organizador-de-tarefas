@@ -3,7 +3,7 @@ formLogin.addEventListener("submit", async function (e) {
   let userInput = inputUser.value;
   let passwordInput = inputPassword.value;
   await axios
-    .post("http://localhost:8888/register", {
+    .post("http://localhost:8888/user/register", {
       user: userInput,
       password: passwordInput,
     })
