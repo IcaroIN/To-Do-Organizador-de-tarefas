@@ -6,7 +6,7 @@ module.exports = {
       where: { user, password },
     });
     if (!createdUser) {
-      return res.json({ error: "Erro ao criar ou logar" });
+      return res.status(401).json({ error: "Erro ao criar ou logar" });
     }
     return res.json({ createdUser, isCreated });
   },

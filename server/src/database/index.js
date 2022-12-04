@@ -1,5 +1,7 @@
 const { Sequelize } = require("sequelize");
+const { username } = require("../config/database");
 const configDb = require("../config/database");
+const Task = require("../models/Task");
 const User = require("../models/User");
 const connection = new Sequelize(configDb);
 
@@ -14,4 +16,7 @@ async function testConnection() {
 testConnection();
 
 User.init(connection);
+Task.init(connection);
+User.associate(connection.models);
+Task.associate(connection.models);
 module.exports = connection;

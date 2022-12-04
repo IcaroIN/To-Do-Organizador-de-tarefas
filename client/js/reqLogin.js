@@ -1,9 +1,17 @@
-async function registerOrLogin() {
-  let userInput = document.getElementById("inputUser").value;
-  let passwordInput = document.getElementById("inputPassword").value;
-  const { data } = await axios.post("http://localhost:8888/register", {
-    user: userInput,
-    password: passwordInput,
-  });
-  console.log(data);
-}
+formLogin.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  let userInput = inputUser.value;
+  let passwordInput = inputPassword.value;
+  await axios
+    .post("http://localhost:8888/register", {
+      user: userInput,
+      password: passwordInput,
+    })
+    .then(function ({ data }) {
+      localStorage.setItem("infoLogin", JSON.stringify(data));
+      location.replace("/client");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+});
