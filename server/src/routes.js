@@ -6,8 +6,10 @@ router.get("/user", function (req, res) {
   res.send("Alguma mensagem");
 });
 
-router.post("/register", UserController.store);
+router.post("/user/register", UserController.store);
 
-router.post("/task/register", TaskController.store);
+router.post("/user/:user_id/task", TaskController.store);
+
+router.get("/user/:user_id/task", TaskController.index);
 
 module.exports = router;

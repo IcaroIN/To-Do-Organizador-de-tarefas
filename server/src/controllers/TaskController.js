@@ -1,8 +1,14 @@
 const Task = require("../models/Task");
 const User = require("../models/User");
 module.exports = {
+  async index(req, res) {
+    const { user_id } = req.params;
+    const listTask = await Task.findAll({ where: { user_id } });
+    return res.json(listTask);
+  },
   async store(req, res) {
-    const { task, user_id } = req.body;
+    const { task } = req.body;
+    const { user_id } = req.params;
     const user = await User.findByPk(user_id);
     if (!user) {
       return res.status(400).json({ error: "Usuario não encontrado" });
@@ -11,6 +17,6 @@ module.exports = {
     if (!createdTask) {
       return res.status(401).json({ error: "Erro ao criar task" });
     }
-    return res.json({ createdTask });
+    return res.json(createdTask);
   },
 };
