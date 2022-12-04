@@ -10,7 +10,7 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      name: {
+      user: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -30,6 +30,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("techs");
+    await queryInterface.dropTable("users");
   },
 };
