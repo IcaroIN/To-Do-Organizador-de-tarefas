@@ -14,4 +14,6 @@ router.get("/user/:user_id/task", TaskController.index);
 
 router.delete("/user/:user_id/task/:id", TaskController.destroy);
 
+router.put("/user/:user_id/task/:id", TaskController.update);
+
 module.exports = router;

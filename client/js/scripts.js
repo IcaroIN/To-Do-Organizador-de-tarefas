@@ -100,6 +100,10 @@ todoForm.addEventListener("submit", (e) => {
 document.addEventListener("click", (e) => {
   const targetEl = e.target;
   const parentEl = targetEl.closest("div");
+
+  if (parentEl.id) {
+    localStorage.setItem("taskId", parentEl.id);
+  }
   let todoTitle;
 
   if (parentEl && parentEl.querySelector("h3")) {
@@ -111,12 +115,12 @@ document.addEventListener("click", (e) => {
   }
 
   if (targetEl.classList.contains("remove-todo")) {
-    const id = parentEl.id;
     const userStorage = JSON.parse(localStorage.getItem("infoLogin"));
     const idStorage = userStorage.createdUser.id;
 
+    const taskId = localStorage.getItem("taskId");
     axios
-      .delete(`http://localhost:8888/user/${idStorage}/task/${id}`)
+      .delete(`http://localhost:8888/user/${idStorage}/task/${taskId}`)
       .then(function ({ data }) {})
       .catch(function (error) {
         console.log(error);
@@ -142,6 +146,20 @@ editForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const editInputValue = editInput.value;
+
+  const userStorage = JSON.parse(localStorage.getItem("infoLogin"));
+  const idStorage = userStorage.createdUser.id;
+
+  const taskId = localStorage.getItem("taskId");
+
+  axios
+    .put(`http://localhost:8888/user/${idStorage}/task/${taskId}`, {
+      taskName: editInputValue,
+    })
+    .then(function ({ data }) {})
+    .catch(function (error) {
+      console.log(error);
+    });
 
   if (editInputValue) {
     updateTodo(editInputValue);

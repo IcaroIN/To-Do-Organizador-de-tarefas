@@ -1,3 +1,4 @@
+const { update } = require("../models/Task");
 const Task = require("../models/Task");
 const User = require("../models/User");
 module.exports = {
@@ -34,5 +35,22 @@ module.exports = {
     await Task.destroy({ where: { id } });
 
     return res.json();
+  },
+
+  async update(req, res) {
+    const { taskName } = req.body;
+    const { user_id, id } = req.params;
+    const task = await Task.findByPk(id);
+    if (!task) {
+      return res.status(400).json({ error: "Task não existe" });
+    }
+    if (task.user_id != user_id) {
+      return res
+        .status(400)
+        .json({ error: "usuário não é proprietário da task" });
+    }
+    await Task.update({ task: taskName }, { where: { id } });
+    task.task = taskName;
+    return res.json(task);
   },
 };
