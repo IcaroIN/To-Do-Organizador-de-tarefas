@@ -19,4 +19,20 @@ module.exports = {
     }
     return res.json(createdTask);
   },
+
+  async destroy(req, res) {
+    const { user_id, id } = req.params;
+    const task = await Task.findByPk(id);
+    if (!task) {
+      return res.status(400).json({ error: "Task não existe" });
+    }
+    if (task.user_id != user_id) {
+      return res
+        .status(400)
+        .json({ error: "usuário não é proprietário da task" });
+    }
+    await Task.destroy({ where: { id } });
+
+    return res.json();
+  },
 };

@@ -17,7 +17,7 @@ function viewTasks() {
     .get(`http://localhost:8888/user/${idStorage}/task`)
     .then(function ({ data }) {
       data.forEach(function (task) {
-        saveTodo(task.task);
+        saveTodo(task.task, task.id);
       });
     })
     .catch(function (error) {
@@ -26,8 +26,9 @@ function viewTasks() {
 }
 viewTasks();
 
-const saveTodo = (text) => {
+const saveTodo = (text, id) => {
   const todo = document.createElement("div");
+  todo.setAttribute("id", id);
   todo.classList.add("todo");
 
   const todoTitle = document.createElement("h3");
@@ -110,6 +111,16 @@ document.addEventListener("click", (e) => {
   }
 
   if (targetEl.classList.contains("remove-todo")) {
+    const id = parentEl.id;
+    const userStorage = JSON.parse(localStorage.getItem("infoLogin"));
+    const idStorage = userStorage.createdUser.id;
+
+    axios
+      .delete(`http://localhost:8888/user/${idStorage}/task/${id}`)
+      .then(function ({ data }) {})
+      .catch(function (error) {
+        console.log(error);
+      });
     parentEl.remove();
   }
 
