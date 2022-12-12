@@ -9,6 +9,23 @@ const cancelEditBtn = document.querySelector("#cancel-edit-btn");
 let oldInputValue;
 
 //Funções//
+
+function viewTasks() {
+  const userStorage = JSON.parse(localStorage.getItem("infoLogin"));
+  const idStorage = userStorage.createdUser.id;
+  axios
+    .get(`http://localhost:8888/user/${idStorage}/task`)
+    .then(function ({ data }) {
+      data.forEach(function (task) {
+        saveTodo(task.task);
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+viewTasks();
+
 const saveTodo = (text) => {
   const todo = document.createElement("div");
   todo.classList.add("todo");
@@ -57,7 +74,7 @@ const updateTodo = (text) => {
 };
 
 //Eventos//
-todoForm.addEventListener("submit", async (e) => {
+todoForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const inputValue = todoInput.value;
@@ -65,7 +82,7 @@ todoForm.addEventListener("submit", async (e) => {
   const userStorage = JSON.parse(localStorage.getItem("infoLogin"));
   const idStorage = userStorage.createdUser.id;
 
-  await axios
+  axios
     .post(`http://localhost:8888/user/${idStorage}/task`, { task: inputValue })
     .then(function ({ data }) {
       console.log(data);
